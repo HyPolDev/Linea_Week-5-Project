@@ -1,4 +1,4 @@
-import { getUsersAsAdmin } from "./user.repository.js"
+import { getProfileAsUser, getUsersAsAdmin, getUsersAsUser } from "./user.repository.js"
 
 
 export const getUsersService = async (req) => {
@@ -16,5 +16,18 @@ export const getUsersService = async (req) => {
     if (roleName == "user") {
         const users = await getUsersAsUser(req, skip, limit)
         return users
+    }
+}
+
+export const getProfileService = async (req, res) => {
+    const userName = req.params.userName
+    const roleName = req.tokenData.roleName
+    if (roleName == "superadmin" || roleName == "admin") {
+        const Profile = await User.find({ userName: userName })
+        return Profile
+    }
+    else {
+        const Profile = await getProfileAsUser(req, userName)
+        return Profile
     }
 }
