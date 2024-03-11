@@ -1,5 +1,5 @@
 import { handleError } from "../../core/handleError.js"
-import { loginService } from "./auth.service.js"
+import { loginService, registerService } from "./auth.service.js"
 
 
 export const login = async (req, res) => {
@@ -26,7 +26,7 @@ export const login = async (req, res) => {
 export const register = async (req, res) => {
 	try {
 
-		const newUser = await getRegisterService(req)
+		const newUser = await registerService(req)
 
 		res.status(201).json({
 			success: true,

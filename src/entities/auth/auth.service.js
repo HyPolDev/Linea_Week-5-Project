@@ -51,6 +51,7 @@ export const registerService = async (req) => {
 
     const email = req.body.email
     const password = req.body.password
+    const userName = req.body.userName
 
     if (!email || !password) {
         throw new Error("Email and password are required")
@@ -68,9 +69,9 @@ export const registerService = async (req) => {
 
     const emailUsed = await emailInUse(email)
 
-    const passwordEncrypted = bcrypt.hashSync(password, 5)
+    const passwordEncrypted = bcrypt.hashSync(password, 8)
 
-    const newUser = await createUser(email, passwordEncrypted)
-
+    const newUser = await createUser(email, passwordEncrypted, userName)
+    //also create and return token in the future;
     return newUser
 }

@@ -10,7 +10,7 @@ export const emailInUse = async (email) => {
     }
 }
 
-export const createUser = async (email, password) => {
+export const createUser = async (email, password, userName) => {
 
     const newUser = await User.create({
         userName: userName,
