@@ -51,3 +51,19 @@ export const getProfileAsUser = async (req, userName) => {
         })
     }
 }
+
+export const checkUserIsActive = async (userName) => {
+
+    const user = await User.find({ userName: userName })
+
+    return user[0].is_active
+}
+
+export const deleteProfileRepository = async (userName) => {
+    const deleteUser = await User.findOneAndUpdate(
+        { userName: userName },
+        { $set: { is_active: false } },
+        { new: true }
+    )
+    return deleteUser
+}
