@@ -1,4 +1,4 @@
-import { checkUserIsActive, deleteProfileRepository, getProfileAsUser, getUsersAsAdmin, getUsersAsUser } from "./user.repository.js"
+import { checkUserIsActive, deleteProfileRepository, getProfileAsUser, getUsersAsAdmin, getUsersAsUser, updateProfileRepository } from "./user.repository.js"
 
 
 export const getUsersService = async (req) => {
@@ -43,6 +43,13 @@ export const deleteProfileService = async (req, res) => {
     }
 
     const profile = await deleteProfileRepository(userName)
+
+    return profile
+}
+
+export const updateProfileService = async (req) => {
+
+    const profile = await updateProfileRepository(req)
 
     return profile
 }

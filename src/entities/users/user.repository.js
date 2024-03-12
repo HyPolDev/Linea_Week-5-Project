@@ -67,3 +67,14 @@ export const deleteProfileRepository = async (userName) => {
     )
     return deleteUser
 }
+
+export const updateProfileRepository = async (req) => {
+    const userName = req.params.userName
+    const body = req.body
+
+    const updateUser = await User.findOneAndUpdate(
+        { userName },
+        body,
+        { new: true })
+    return updateUser
+}

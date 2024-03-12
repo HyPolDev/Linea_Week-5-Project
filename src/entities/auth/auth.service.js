@@ -5,6 +5,11 @@ import { createUser, emailInUse, getUserByEmail } from "./auth.repository.js"
 export const loginService = async (req) => {
     const email = req.body.email
     const password = req.body.password
+    const isActive = await checkUserIsActive(userName)
+
+    if (!isActive) {
+        throw new Error("Email or password invalid")
+    }
 
     if (!email || !password) {
         throw new Error("Email and password are required")
