@@ -1,4 +1,3 @@
-import e from "express"
 import { handleError } from "../../core/handleError.js"
 import { deleteProfileService, followProfileService, getProfileService, getUsersService, updateProfileService } from "./user.service.js"
 

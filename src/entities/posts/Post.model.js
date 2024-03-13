@@ -17,9 +17,14 @@ const PostSchema = new Schema(
             default: []
         }],
         comments: [{
-            text: String,
+            type: String,
+            ref: "Post",
+            default: []
+        }],
+        comentOf: {
+            type: String,
             ref: "Post"
-        }]
+        }
     },
     {
         timestamps: true,
