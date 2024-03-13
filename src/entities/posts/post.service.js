@@ -1,5 +1,5 @@
 import Post from "./Post.model.js"
-import { getPostsAsAdmin, getPostsAsUser } from "./post.repository.js"
+import { checkPostIsActive, deletePostRepository, getPostsAsAdmin, getPostsAsUser } from "./post.repository.js"
 
 export const getPostsService = async (req) => {
 
@@ -19,4 +19,22 @@ export const getPostsService = async (req) => {
         const posts = await getPostsAsUser(req, skip, limit)
         return posts
     }
+}
+
+export const deletePostService = async (req) => {
+
+    console.log("0")
+    const postId = req.params.id
+    console.log("1")
+    console.log(postId)
+    const isActive = await checkPostIsActive(postId)
+    console.log("2");
+    if (!isActive) {
+        throw new Error("Post already deleted")
+    }
+    console.log("3")
+    const post = await deletePostRepository(postId)
+    console.log("4");
+    return post
+
 }

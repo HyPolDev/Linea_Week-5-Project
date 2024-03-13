@@ -16,7 +16,7 @@ export const getPostsAsAdmin = async (req, skip, limit) => {
 
 export const getPostsAsUser = async (req, skip, limit) => {
 
-    const post = await Post.find({})
+    const post = await Post.find({ is_active: true })
         .skip(skip)
         .limit(limit)
 
@@ -25,4 +25,25 @@ export const getPostsAsUser = async (req, skip, limit) => {
     }
 
     return post;
+}
+
+export const checkPostIsActive = async (_id) => {
+
+    const post = await Post.findById(_id)
+
+    if (!post) {
+        throw new NotFoundError("Post not found")
+    }
+
+    return post.is_active
+}
+
+export const deletePostRepository = async (postId) => {
+    console.log("3.1");
+    const deletePost = await Post.findByIdAndUpdate(
+        postId,
+        { $set: { is_active: false } },
+        { new: true }
+    )
+    return deletePost
 }

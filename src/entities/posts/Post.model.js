@@ -24,6 +24,10 @@ const PostSchema = new Schema(
         comentOf: {
             type: String,
             ref: "Post"
+        },
+        is_active: {
+            type: Boolean,
+            default: true
         }
     },
     {
