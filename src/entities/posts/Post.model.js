@@ -12,13 +12,13 @@ const PostSchema = new Schema(
             required: true
         },
         likes: [{
-            type: Schema.Types.ObjectId,
+            type: String,
             ref: "User",
             default: []
         }],
         comments: [{
             text: String,
-            required: true,
+            ref: "Post"
         }]
     },
     {
