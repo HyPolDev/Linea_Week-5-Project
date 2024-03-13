@@ -78,3 +78,14 @@ export const updateProfileRepository = async (req) => {
         { new: true })
     return updateUser
 }
+
+export const getProfileRepository = async (userName) => {
+
+    const profile = await User.find({ userName: userName }).select("-password")
+
+    if (!profile) {
+        throw new NotFoundError("Profile not found")
+    }
+
+    return profile
+}

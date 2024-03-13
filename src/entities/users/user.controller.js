@@ -1,5 +1,6 @@
+import e from "express"
 import { handleError } from "../../core/handleError.js"
-import { deleteProfileService, getProfileService, getUsersService, updateProfileService } from "./user.service.js"
+import { deleteProfileService, followProfileService, getProfileService, getUsersService, updateProfileService } from "./user.service.js"
 
 export const getUsers = async (req, res) => {
     try {
@@ -74,5 +75,23 @@ export const updateProfile = async (req, res) => {
             return handleError(res, error.message, 400)
         }
         handleError(res, "Can not delete profile", 500)
+    }
+}
+
+export const followProfile = async (req, res) => {
+    try {
+        const followprofile = await followProfileService(req)
+
+        res.status(200).json({
+            success: true,
+            message: "User followed successfuly",
+            followprofile: followprofile
+        })
+
+    } catch (error) {
+        if (error.message === "Users not found") {
+            return handleError(res, error.message, 400)
+        }
+        handleError(res, "Can not follow profile, server error", 500)
     }
 }

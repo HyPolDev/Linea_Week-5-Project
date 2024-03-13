@@ -1,4 +1,4 @@
-import { checkUserIsActive, deleteProfileRepository, getProfileAsUser, getUsersAsAdmin, getUsersAsUser, updateProfileRepository } from "./user.repository.js"
+import { checkUserIsActive, deleteProfileRepository, getProfileAsUser, getProfileRepository, getUsersAsAdmin, getUsersAsUser, updateProfileRepository } from "./user.repository.js"
 
 
 export const getUsersService = async (req) => {
@@ -53,3 +53,38 @@ export const updateProfileService = async (req) => {
 
     return profile
 }
+
+export const followProfileService = async (req) => {
+
+    const userToFollowName = req.params.userName
+    const userName = req.tokenData.userName
+
+    const isActive = await checkUserIsActive(userToFollowName)
+
+    if (!isActive) {
+        throw new Error("User not found")
+    }
+    if (userToFollowName == userName) {
+        throw new error("You cant follow yourself")
+    }
+
+    const userToFollow = await getProfileRepository(userToFollowName)
+    const userFollowing = await getProfileRepository(userName)
+
+    if (userToFollow[0].followers.includes(userName)) {
+
+        userToFollow[0].followers.pull(userName)
+        userFollowing[0].following.pull(userToFollowName)
+
+    } else {
+
+        userToFollow[0].followers.push(userName)
+        userFollowing[0].following.push(userToFollowName)
+
+    }
+
+    await userFollowing[0].save()
+    await userToFollow[0].save()
+
+    return { userToFollow, userFollowing }
+}  

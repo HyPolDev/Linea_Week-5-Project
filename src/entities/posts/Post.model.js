@@ -17,13 +17,8 @@ const PostSchema = new Schema(
             default: []
         }],
         comments: [{
-            commentAuthorId: {
-                type: Schema.Types.ObjectId,
-                ref: "User"
-            },
-            commentary: {
-                type: String,
-            }
+            text: String,
+            required: true,
         }]
     },
     {
