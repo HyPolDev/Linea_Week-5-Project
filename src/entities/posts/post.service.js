@@ -76,10 +76,32 @@ export const updatePostService = async (req, res) => {
         throw new error("Can't update others post")
     }
 
+    if (message.length < 1) {
+        throw new error("Can't uptade to blank")
+    }
+
     const updatedPost = await Post.updateOne(
         { _id: req.body.id },
         { $set: { text: message } },
         { new: true })
 
     return updatedPost
+}
+
+export const likePostService = async (req, res) => {
+
+    let postToLikeId = req.params.id
+    let userName = req.tokenData.userName
+
+    const post = await Post.findById(postToLikeId)
+
+    if (post.likes.includes(userName)) {
+        post.likes.pull(userName)
+    }
+    else {
+        post.likes.push(userName)
+    }
+
+    await post.save()
+    return post
 }
