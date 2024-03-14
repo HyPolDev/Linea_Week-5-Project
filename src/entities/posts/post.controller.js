@@ -74,7 +74,7 @@ export const getPostById = async (req, res) => {
         ) {
             return handleError(res, error.message, 400)
         }
-        handleError(res, "Can not create post", 500)
+        handleError(res, "Can not retrieve post", 500)
     }
 }
 

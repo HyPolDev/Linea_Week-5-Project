@@ -56,7 +56,9 @@ export const createPostService = async (req) => {
 export const getPostByIdService = async (req, res) => {
 
     const post = await Post.findById(req.params.id)
-
+    if (!post.is_active) {
+        throw new error("Post not found")
+    }
     return post
 }
 
