@@ -1,5 +1,5 @@
 import { handleError } from "../../core/handleError.js"
-import { deletePostService, getPostsService } from "./post.service.js"
+import { createPostService, deletePostService, getPostsService } from "./post.service.js"
 
 export const getPosts = async (req, res) => {
     try {
@@ -38,5 +38,24 @@ export const deletePost = async (req, res) => {
             return handleError(res, error.message, 400)
         }
         handleError(res, "Can not delete post", 500)
+    }
+}
+
+export const createPost = async (req, res) => {
+    try {
+        const post = await createPostService(req)
+
+        res.status(200).json({
+            success: true,
+            message: "Post created succesfully",
+            data: post
+        })
+    } catch (error) {
+        if (error.message === "Invalid text" ||
+            error.message === "Message needed"
+        ) {
+            return handleError(res, error.message, 400)
+        }
+        handleError(res, "Can not create post", 500)
     }
 }

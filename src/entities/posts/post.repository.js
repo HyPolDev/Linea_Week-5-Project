@@ -39,11 +39,20 @@ export const checkPostIsActive = async (_id) => {
 }
 
 export const deletePostRepository = async (postId) => {
-    console.log("3.1");
+
     const deletePost = await Post.findByIdAndUpdate(
         postId,
         { $set: { is_active: false } },
         { new: true }
     )
     return deletePost
+}
+
+export const createPostRepository = async (text, userId) => {
+
+    const post = await Post.create({
+        text: text,
+        authorId: userId
+    })
+    return post
 }

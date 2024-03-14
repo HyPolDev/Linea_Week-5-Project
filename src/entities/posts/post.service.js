@@ -1,5 +1,5 @@
 import Post from "./Post.model.js"
-import { checkPostIsActive, deletePostRepository, getPostsAsAdmin, getPostsAsUser } from "./post.repository.js"
+import { checkPostIsActive, createPostRepository, deletePostRepository, getPostsAsAdmin, getPostsAsUser } from "./post.repository.js"
 
 export const getPostsService = async (req) => {
 
@@ -37,4 +37,18 @@ export const deletePostService = async (req) => {
     console.log("4");
     return post
 
+}
+
+export const createPostService = async (req) => {
+
+    const text = req.body.text
+    const authorId = req.tokenData.userId
+
+    if (!text) {
+        throw new error("Message needed")
+    }
+
+    const post = await createPostRepository(text, authorId)
+
+    return post
 }
