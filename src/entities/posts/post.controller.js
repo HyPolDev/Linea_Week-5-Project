@@ -1,5 +1,5 @@
 import { handleError } from "../../core/handleError.js"
-import { createPostService, deletePostService, getPostByIdService, getPostsService } from "./post.service.js"
+import { createPostService, deletePostService, getPostByIdService, getPostsService, updatePostService } from "./post.service.js"
 
 export const getPosts = async (req, res) => {
     try {
@@ -71,6 +71,25 @@ export const getPostById = async (req, res) => {
         })
     } catch (error) {
         if (error.message === "Post not found"
+        ) {
+            return handleError(res, error.message, 400)
+        }
+        handleError(res, "Can not create post", 500)
+    }
+}
+
+export const updatePost = async (req, res) => {
+    try {
+        const post = await updatePostService(req)
+
+        res.status(200).json({
+            success: true,
+            message: "Post updated succesfully",
+            data: post
+        })
+    } catch (error) {
+        if (error.message === "Post not found" ||
+            error.message === "Can't update others post"
         ) {
             return handleError(res, error.message, 400)
         }

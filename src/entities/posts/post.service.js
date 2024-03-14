@@ -23,18 +23,18 @@ export const getPostsService = async (req) => {
 
 export const deletePostService = async (req) => {
 
-    console.log("0")
+
     const postId = req.params.id
-    console.log("1")
+
     console.log(postId)
     const isActive = await checkPostIsActive(postId)
-    console.log("2");
+
     if (!isActive) {
         throw new Error("Post already deleted")
     }
-    console.log("3")
+
     const post = await deletePostRepository(postId)
-    console.log("4");
+
     return post
 
 }
@@ -58,4 +58,26 @@ export const getPostByIdService = async (req, res) => {
     const post = await Post.findById(req.params.id)
 
     return post
+}
+
+export const updatePostService = async (req, res) => {
+
+    const post = await Post.findById(req.body.id)
+    const authorId = post.authorId
+    const message = req.body.message
+
+    if (!post) {
+        throw new error("post not found")
+    }
+
+    if (!authorId == req.tokenData.userId) {
+        throw new error("Can't update others post")
+    }
+
+    const updatedPost = await Post.updateOne(
+        { _id: req.body.id },
+        { $set: { text: message } },
+        { new: true })
+
+    return updatedPost
 }
