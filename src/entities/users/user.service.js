@@ -1,3 +1,5 @@
+import Post from "../posts/Post.model.js"
+import User from "./User.model.js"
 import { checkUserIsActive, deleteProfileRepository, getProfileAsUser, getProfileRepository, getUsersAsAdmin, getUsersAsUser, updateProfileRepository } from "./user.repository.js"
 
 
@@ -87,4 +89,13 @@ export const followProfileService = async (req) => {
     await userToFollow[0].save()
 
     return { userToFollow, userFollowing }
-}  
+}
+
+export const getProfilePostsService = async (req, res) => {
+
+    const user = await User.find({ userName: req.params.userName })
+
+    const posts = await Post.find({ authorId: user[0]._id })
+
+    return posts
+}
