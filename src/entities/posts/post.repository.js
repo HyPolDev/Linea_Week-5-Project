@@ -10,7 +10,7 @@ export const getPostsAsAdmin = async (req, skip, limit) => {
         throw new Error(`No posts found at page ${req.body.page}`)
     }
 
-    return post;
+    return posts;
 
 }
 

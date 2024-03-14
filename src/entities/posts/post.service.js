@@ -52,3 +52,10 @@ export const createPostService = async (req) => {
 
     return post
 }
+
+export const getPostByIdService = async (req, res) => {
+
+    const post = await Post.findById(req.params.id)
+
+    return post
+}
