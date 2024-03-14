@@ -95,7 +95,12 @@ export const getProfilePostsService = async (req, res) => {
 
     const user = await User.find({ userName: req.params.userName })
 
-    const posts = await Post.find({ authorId: user[0]._id })
+    const posts = await Post.find({
+        $and: [
+            { authorId: user[0]._id },
+            { is_active: true }
+        ]
+    })
 
     return posts
 }
