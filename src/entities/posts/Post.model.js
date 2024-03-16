@@ -21,8 +21,8 @@ const PostSchema = new Schema(
             ref: "Post",
             default: []
         }],
-        comentOf: {
-            type: String,
+        commentOf: {
+            type: Schema.Types.ObjectId,
             ref: "Post"
         },
         is_active: {

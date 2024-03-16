@@ -56,3 +56,13 @@ export const createPostRepository = async (text, userId) => {
     })
     return post
 }
+
+export const createCommentRepository = async (text, userId, commentOf) => {
+
+    const post = await Post.create({
+        text: text,
+        authorId: userId,
+        commentOf: commentOf
+    })
+    return post
+}

@@ -1,5 +1,5 @@
 import Post from "./Post.model.js"
-import { checkPostIsActive, createPostRepository, deletePostRepository, getPostsAsAdmin, getPostsAsUser } from "./post.repository.js"
+import { checkPostIsActive, createCommentRepository, createPostRepository, deletePostRepository, getPostsAsAdmin, getPostsAsUser } from "./post.repository.js"
 
 export const getPostsService = async (req) => {
 
@@ -103,5 +103,23 @@ export const likePostService = async (req, res) => {
     }
 
     await post.save()
+    return post
+}
+
+export const createCommentService = async (req, res) => {
+
+    const text = req.body.text
+    const commentOf = req.body.commentOf
+    const authorId = req.tokenData.userId
+
+    if (!text) {
+        throw new error("Message needed")
+    }
+    if (!commentOf) {
+        throw new error("Message needed")
+    }
+
+    const post = await createCommentRepository(text, authorId, commentOf)
+
     return post
 }
