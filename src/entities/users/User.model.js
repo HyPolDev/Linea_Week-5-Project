@@ -9,15 +9,15 @@ const UserSchema = new Schema({
     },
     fisrtName: {
         type: String,
-        required: false,
+        default: ""
     },
     lastName: {
         type: String,
-        required: false,
+        default: ""
     },
     about: {
         type: String,
-        required: false,
+        default: ""
     },
     email: {
         type: String,
@@ -44,11 +44,26 @@ const UserSchema = new Schema({
         ref: "User",
         default: []
     }],
+    followRequests: [{
+        type: String,
+        ref: "User",
+        default: []
+    }],
     visibility: {
         type: String,
         enum: ["public", "private"],
         default: "public"
     },
+    savedPosts: [{
+        type: String,
+        ref: "Post",
+        default: []
+    }],
+    repostedPosts: [{
+        type: String,
+        ref: "Post",
+        default: []
+    }],
     is_active: {
         type: Boolean,
         default: true
