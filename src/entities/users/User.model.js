@@ -35,12 +35,12 @@ const UserSchema = new Schema({
         default: "user"
     },
     following: [{
-        type: Schema.Types.ObjectId,
+        type: String,
         ref: "User",
         default: []
     }],
     followers: [{
-        type: Schema.Types.ObjectId,
+        type: String,
         ref: "User",
         default: []
     }],

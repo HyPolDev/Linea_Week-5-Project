@@ -30,3 +30,10 @@ export const getUserByEmail = async (email) => {
 
     return user
 }
+
+export const checkUserIsActive = async (email) => {
+
+    const user = await User.find({ email: email })
+
+    return user[0].is_active
+}

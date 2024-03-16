@@ -67,3 +67,25 @@ export const deleteProfileRepository = async (userName) => {
     )
     return deleteUser
 }
+
+export const updateProfileRepository = async (req) => {
+    const userName = req.params.userName
+    const body = req.body
+
+    const updateUser = await User.findOneAndUpdate(
+        { userName },
+        body,
+        { new: true })
+    return updateUser
+}
+
+export const getProfileRepository = async (userName) => {
+
+    const profile = await User.find({ userName: userName }).select("-password")
+
+    if (!profile) {
+        throw new NotFoundError("Profile not found")
+    }
+
+    return profile
+}

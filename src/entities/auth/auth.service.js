@@ -1,10 +1,15 @@
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
-import { createUser, emailInUse, getUserByEmail } from "./auth.repository.js"
+import { checkUserIsActive, createUser, emailInUse, getUserByEmail } from "./auth.repository.js"
 
 export const loginService = async (req) => {
     const email = req.body.email
     const password = req.body.password
+    const isActive = await checkUserIsActive(email)
+
+    if (!isActive) {
+        throw new Error("Email or password invalid")
+    }
 
     if (!email || !password) {
         throw new Error("Email and password are required")
@@ -35,7 +40,8 @@ export const loginService = async (req) => {
     const token = jwt.sign(
         {
             userId: user._id,
-            roleName: user.role
+            roleName: user.role,
+            userName: user.userName
         },
         process.env.JWT_SECRET,
         {

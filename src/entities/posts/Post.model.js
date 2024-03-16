@@ -12,19 +12,23 @@ const PostSchema = new Schema(
             required: true
         },
         likes: [{
-            type: Schema.Types.ObjectId,
+            type: String,
             ref: "User",
             default: []
         }],
         comments: [{
-            commentAuthorId: {
-                type: Schema.Types.ObjectId,
-                ref: "User"
-            },
-            commentary: {
-                type: String,
-            }
-        }]
+            type: String,
+            ref: "Post",
+            default: []
+        }],
+        commentOf: {
+            type: Schema.Types.ObjectId,
+            ref: "Post"
+        },
+        is_active: {
+            type: Boolean,
+            default: true
+        }
     },
     {
         timestamps: true,
