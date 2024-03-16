@@ -1,5 +1,5 @@
 import { handleError } from "../../core/handleError.js"
-import { deleteProfileService, followProfileService, getProfilePostsService, getProfileService, getUsersService, updateProfileService } from "./user.service.js"
+import { acceptFollowService, declineFollowService, deleteProfileService, followProfileService, getProfilePostsService, getProfileService, getUsersService, updateProfileService } from "./user.service.js"
 
 export const getUsers = async (req, res) => {
     try {
@@ -112,3 +112,40 @@ export const getProfilePosts = async (req, res) => {
         handleError(res, "Can not retrieve posts, server error", 500)
     }
 }
+
+export const acceptFollow = async (req, res) => {
+    try {
+        const data = await acceptFollowService(req)
+
+        res.status(200).json({
+            success: true,
+            message: "Posts retrieved successfuly",
+            data: data
+        })
+
+    } catch (error) {
+        if (error.message === "Users not found") {
+            return handleError(res, error.message, 404)
+        }
+        handleError(res, "Can not retrieve posts, server error", 500)
+    }
+}
+
+export const declineFollow = async (req, res) => {
+    try {
+        const data = await declineFollowService(req)
+
+        res.status(200).json({
+            success: true,
+            message: "Posts retrieved successfuly",
+            data: data
+        })
+
+    } catch (error) {
+        if (error.message === "Request not found") {
+            return handleError(res, error.message, 404)
+        }
+        handleError(res, "Can not retrieve posts, server error", 500)
+    }
+}
+
