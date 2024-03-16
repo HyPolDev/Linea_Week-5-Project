@@ -1,5 +1,4 @@
 import User from "./User.model.js"
-import bcrypt from "bcrypt"
 
 export const getUsersAsAdmin = async (req, skip, limit) => {
 
@@ -84,7 +83,7 @@ export const getProfileRepository = async (userName) => {
     const profile = await User.find({ userName: userName }).select("-password")
 
     if (!profile) {
-        throw new NotFoundError("Profile not found")
+        throw new error("Profile not found")
     }
 
     return profile

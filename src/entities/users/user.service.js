@@ -80,8 +80,13 @@ export const followProfileService = async (req) => {
 
     } else {
 
-        userToFollow[0].followers.push(userName)
-        userFollowing[0].following.push(userToFollowName)
+        if (userToFollow[0].visibility !== "public") {
+            userToFollow[0].followRequests.push(userName)
+        }
+        else {
+            userToFollow[0].followers.push(userName)
+            userFollowing[0].following.push(userToFollowName)
+        }
 
     }
 
@@ -103,4 +108,39 @@ export const getProfilePostsService = async (req, res) => {
     })
 
     return posts
+}
+
+export const acceptFollowService = async (req, res) => {
+
+    const userToAcceptName = req.params.userName
+    const userName = req.tokenData.userName
+
+    const userToAccept = await getProfileRepository(userToAcceptName)
+    const user = await getProfileRepository(userName)
+
+    user[0].followRequests.pull(userToAcceptName)
+    user[0].followers.push(userToAcceptName)
+    userToAccept[0].following.push(userName)
+
+    await userToAccept[0].save()
+    await user[0].save()
+
+    return { userToFollow, userFollowing }
+}
+
+export const declineFollowService = async (req, res) => {
+    const userToAcceptName = req.params.userName
+    const userName = req.tokenData.userName
+
+    const user = await getProfileRepository(userName)
+
+    if (!user[0].followRequests.includes(userToAcceptName)) {
+        throw new error("Request not found")
+    }
+
+    user[0].followRequests.pull(userToAcceptName)
+
+    await user[0].save()
+
+    return user
 }
