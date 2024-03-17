@@ -22,6 +22,7 @@ export const getUsersService = async (req) => {
 }
 
 export const getProfileService = async (req, res) => {
+
     const userName = req.params.userName
     const roleName = req.tokenData.roleName
     if (roleName == "superadmin" || roleName == "admin") {
@@ -143,4 +144,12 @@ export const declineFollowService = async (req, res) => {
     await user[0].save()
 
     return user
+}
+
+export const getFollowRequestsService = async (req, res) => {
+
+    const userName = req.tokenData.userName
+    const user = await User.find({ userName: userName }, "followRequests")
+
+    return user[0].followRequests
 }
