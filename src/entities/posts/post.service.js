@@ -62,7 +62,8 @@ export const getPostByIdService = async (req, res) => {
     const author = await User.findById(post.authorId)
 
     if (author.visibility !== "public" &&
-        !author.followers.includes(userName)) {
+        !author.followers.includes(userName) &&
+        author.userName !== userName) {
         throw new Error("Private post")
     }
 

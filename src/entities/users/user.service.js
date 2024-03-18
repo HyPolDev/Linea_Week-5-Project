@@ -104,7 +104,8 @@ export const getProfilePostsService = async (req, res) => {
     let posts
 
     if (user[0].visibility == "public"
-        || user[0].followers.includes(req.tokenData.userName)) {
+        || user[0].followers.includes(req.tokenData.userName)
+        || userName == req.tokenData.userName) {
 
         posts = await Post.find({
             $and: [
