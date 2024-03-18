@@ -1,3 +1,5 @@
+import { auth } from "../../validator/auth.js"
+import User from "../users/User.model.js"
 import Post from "./Post.model.js"
 import { checkPostIsActive, createCommentRepository, createPostRepository, deletePostRepository, getPostsAsAdmin, getPostsAsUser } from "./post.repository.js"
 
@@ -45,7 +47,7 @@ export const createPostService = async (req) => {
     const authorId = req.tokenData.userId
 
     if (!text) {
-        throw new error("Message needed")
+        throw new Error("Message needed")
     }
 
     const post = await createPostRepository(text, authorId)
@@ -55,10 +57,19 @@ export const createPostService = async (req) => {
 
 export const getPostByIdService = async (req, res) => {
 
+    const userName = req.tokenData.userName
     const post = await Post.findById(req.params.id)
-    if (!post.is_active) {
-        throw new error("Post not found")
+    const author = await User.findById(post.authorId)
+
+    if (author.visibility !== "public" &&
+        !author.followers.includes(userName)) {
+        throw new Error("Private post")
     }
+
+    if (!post.is_active) {
+        throw new Error("Post not found")
+    }
+
     return post
 }
 
@@ -69,15 +80,15 @@ export const updatePostService = async (req, res) => {
     const message = req.body.message
 
     if (!post) {
-        throw new error("post not found")
+        throw new Error("post not found")
     }
 
     if (!authorId == req.tokenData.userId) {
-        throw new error("Can't update others post")
+        throw new Error("Can't update others post")
     }
 
     if (message.length < 1) {
-        throw new error("Can't uptade to blank")
+        throw new Error("Can't uptade to blank")
     }
 
     const updatedPost = await Post.updateOne(
@@ -113,10 +124,10 @@ export const createCommentService = async (req, res) => {
     const authorId = req.tokenData.userId
 
     if (!text) {
-        throw new error("Message needed")
+        throw new Error("Message needed")
     }
     if (!commentOf) {
-        throw new error("Message needed")
+        throw new Error("Message needed")
     }
 
     const post = await createCommentRepository(text, authorId, commentOf)

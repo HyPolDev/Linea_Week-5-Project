@@ -88,7 +88,9 @@ export const followProfile = async (req, res) => {
         })
 
     } catch (error) {
-        if (error.message === "Users not found") {
+        if (error.message === "Users not found"
+            || "User not found"
+            || "You cant follow yourself") {
             return handleError(res, error.message, 400)
         }
         handleError(res, "Can not follow profile, server error", 500)
@@ -106,8 +108,9 @@ export const getProfilePosts = async (req, res) => {
         })
 
     } catch (error) {
-        if (error.message === "Users not found") {
-            return handleError(res, error.message, 404)
+        if (error.message === "Users not found"
+            || "No permision to see this posts") {
+            return handleError(res, error.message, 400)
         }
         handleError(res, "Can not retrieve posts, server error", 500)
     }

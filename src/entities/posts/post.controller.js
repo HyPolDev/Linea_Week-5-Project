@@ -70,7 +70,7 @@ export const getPostById = async (req, res) => {
             data: post
         })
     } catch (error) {
-        if (error.message === "Post not found"
+        if (error.message === "Post not found" || "Private post"
         ) {
             return handleError(res, error.message, 400)
         }
