@@ -22,6 +22,7 @@ export const getUsersService = async (req) => {
 }
 
 export const getProfileService = async (req, res) => {
+
     const userName = req.params.userName
     const roleName = req.tokenData.roleName
     if (roleName == "superadmin" || roleName == "admin") {
@@ -67,7 +68,7 @@ export const followProfileService = async (req) => {
         throw new Error("User not found")
     }
     if (userToFollowName == userName) {
-        throw new error("You cant follow yourself")
+        throw new Error("You cant follow yourself")
     }
 
     const userToFollow = await getProfileRepository(userToFollowName)
@@ -98,14 +99,24 @@ export const followProfileService = async (req) => {
 
 export const getProfilePostsService = async (req, res) => {
 
-    const user = await User.find({ userName: req.params.userName })
+    const userName = req.params.userName
+    const user = await User.find({ userName: userName })
+    let posts
 
-    const posts = await Post.find({
-        $and: [
-            { authorId: user[0]._id },
-            { is_active: true }
-        ]
-    })
+    if (user[0].visibility == "public"
+        || user[0].followers.includes(req.tokenData.userName)
+        || userName == req.tokenData.userName) {
+
+        posts = await Post.find({
+            $and: [
+                { authorId: user[0]._id },
+                { is_active: true }
+            ]
+        })
+    }
+    else {
+        throw new Error("No permision to see this posts")
+    }
 
     return posts
 }
@@ -135,7 +146,7 @@ export const declineFollowService = async (req, res) => {
     const user = await getProfileRepository(userName)
 
     if (!user[0].followRequests.includes(userToAcceptName)) {
-        throw new error("Request not found")
+        throw new Error("Request not found")
     }
 
     user[0].followRequests.pull(userToAcceptName)
@@ -143,4 +154,12 @@ export const declineFollowService = async (req, res) => {
     await user[0].save()
 
     return user
+}
+
+export const getFollowRequestsService = async (req, res) => {
+
+    const userName = req.tokenData.userName
+    const user = await User.find({ userName: userName }, "followRequests")
+
+    return user[0].followRequests
 }
