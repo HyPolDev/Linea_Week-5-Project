@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./src/server.js",
+    "start": "node ./src/core/server.js",
     "dev": "nodemon ./src/core/server.js",
     "seeds": "node ./src/database/seeders/seeder.js"
   },
