@@ -13,7 +13,7 @@
 2.  Run ` $ npm install ` in terminal
 3.  Run and connect your mongooseDB
 4.  Run seeders:  ` $ npm run seeds `
-5.  Start server:  ` $ npm run dev `(for local connection)
+5.  Start server:  ` $ npm run dev `
 
 ## 🚀 Deploy
 
