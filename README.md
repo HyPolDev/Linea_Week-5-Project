@@ -16,7 +16,9 @@
 5.  Start server:  ` $ npm run dev `
 
 ## 🚀 Deploy
-
+```
+https://linea-week-5-project-dev-armk.2.ie-1.fl0.io
+```
 ##  ⚙️ Endpoints
 <details>
 <summary>🟢Auth</summary>
