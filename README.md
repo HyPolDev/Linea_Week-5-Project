@@ -2,7 +2,7 @@
 
 ¡Welcome all to my social media backend reporsitory! This the fifth project at GeeksHubs Academy, consisting in the back and database code of a social media site, in this case, one based on the old Tweetr.
 
-<img src="./img/Captura de pantalla 2024-03-20 120808.png" style="height:10em;width:auto;"/>
+<img src="./img/Captura de pantalla 2024-03-20 120808.png"/>
 
 ## 🛠️ Tech&Tolls used 
 
