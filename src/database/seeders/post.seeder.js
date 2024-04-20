@@ -15,7 +15,8 @@ export const fakePostSeeder = async (numberOfUsers) => {
             numId = (`${i + 4}`).padStart(24, '0')
             fakePost = new Post({
                 text: faker.lorem.text(),
-                authorId: new mongoose.Types.ObjectId(numId)
+                authorId: new mongoose.Types.ObjectId(numId),
+                authorName: "NormalUser"
             });
             fakePosts.push(fakePost);
         }

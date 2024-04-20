@@ -48,11 +48,12 @@ export const deletePostRepository = async (postId) => {
     return deletePost
 }
 
-export const createPostRepository = async (text, userId) => {
+export const createPostRepository = async (text, userId, userName) => {
 
     const post = await Post.create({
         text: text,
-        authorId: userId
+        authorId: userId,
+        authorName: userName
     })
     return post
 }

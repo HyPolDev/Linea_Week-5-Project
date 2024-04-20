@@ -11,6 +11,11 @@ const PostSchema = new Schema(
             ref: "User",
             required: true
         },
+        authorName: {
+            type: String,
+            ref: "User",
+            default: ""
+        },
         likes: [{
             type: String,
             ref: "User",

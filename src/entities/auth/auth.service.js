@@ -3,10 +3,10 @@ import jwt from "jsonwebtoken"
 import { checkUserIsActive, createUser, emailInUse, getUserByEmail } from "./auth.repository.js"
 
 export const loginService = async (req) => {
+
     const email = req.body.email
     const password = req.body.password
     const isActive = await checkUserIsActive(email)
-
     if (!isActive) {
         throw new Error("Email or password invalid")
     }
@@ -58,7 +58,6 @@ export const registerService = async (req) => {
     const email = req.body.email
     const password = req.body.password
     const userName = req.body.userName
-
     if (!email || !password) {
         throw new Error("Email and password are required")
     }

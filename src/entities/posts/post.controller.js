@@ -1,5 +1,5 @@
 import { handleError } from "../../core/handleError.js"
-import { createCommentService, createPostService, deletePostService, getPostByIdService, getPostsService, likePostService, updatePostService } from "./post.service.js"
+import { createCommentService, createPostService, deletePostService, getPostByIdService, getPostsService, getUserPostsService, likePostService, updatePostService } from "./post.service.js"
 
 export const getPosts = async (req, res) => {
     try {
@@ -43,6 +43,8 @@ export const deletePost = async (req, res) => {
 
 export const createPost = async (req, res) => {
     try {
+
+
         const post = await createPostService(req)
 
         res.status(200).json({
@@ -122,11 +124,29 @@ export const createComment = async (req, res) => {
 
         res.status(200).json({
             success: true,
-            message: "Post liked succesfully <3",
+            message: "Comment created successfully",
             data: comment
         })
     } catch (error) {
         if (error.message === "Post not found"
+        ) {
+            return handleError(res, error.message, 400)
+        }
+        handleError(res, "Couldn't create commnent, server error", 500)
+    }
+}
+
+export const getUserPosts = async (req, res) => {
+    try {
+        const posts = await getUserPostsService(req)
+
+        res.status(200).json({
+            success: true,
+            message: "Post Retrieved Successfully",
+            data: posts
+        })
+    } catch (error) {
+        if (error.message === "Posts not found"
         ) {
             return handleError(res, error.message, 400)
         }

@@ -6,7 +6,7 @@ import { checkPostIsActive, createCommentRepository, createPostRepository, delet
 export const getPostsService = async (req) => {
 
     const page = parseInt(req.body.page - 1)
-    const pageSize = parseInt(req.body.pageSize) || 5
+    const pageSize = parseInt(req.body.pageSize) || 1000
     const skip = page * pageSize || 0
     const limit = pageSize
 
@@ -28,7 +28,6 @@ export const deletePostService = async (req) => {
 
     const postId = req.params.id
 
-    console.log(postId)
     const isActive = await checkPostIsActive(postId)
 
     if (!isActive) {
@@ -45,12 +44,13 @@ export const createPostService = async (req) => {
 
     const text = req.body.text
     const authorId = req.tokenData.userId
+    const userName = req.tokenData.userName
 
     if (!text) {
         throw new Error("Message needed")
     }
 
-    const post = await createPostRepository(text, authorId)
+    const post = await createPostRepository(text, authorId, userName)
 
     return post
 }
@@ -134,4 +134,12 @@ export const createCommentService = async (req, res) => {
     const post = await createCommentRepository(text, authorId, commentOf)
 
     return post
+}
+
+export const getUserPostsService = async (req, res) => {
+    const user = req.tokenData.userId
+
+    const posts = await Post.find({ is_active: true, authorId: user })
+
+    return posts
 }

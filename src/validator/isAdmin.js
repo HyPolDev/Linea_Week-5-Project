@@ -7,7 +7,6 @@ export const isAdmin = (req, res, next) => {
                 message: "Unauthorized"
             })
         }
-        console.log(req.tokenData.roleName)
 
         next()
 

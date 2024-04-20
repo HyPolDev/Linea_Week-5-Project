@@ -4,6 +4,7 @@ import { loginService, registerService } from "./auth.service.js"
 
 export const login = async (req, res) => {
 	try {
+
 		const token = await loginService(req)
 
 		res.status(200).json({
@@ -25,7 +26,6 @@ export const login = async (req, res) => {
 
 export const register = async (req, res) => {
 	try {
-
 		const newUser = await registerService(req)
 
 		res.status(201).json({

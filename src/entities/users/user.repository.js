@@ -1,3 +1,4 @@
+import { read } from "fs";
 import User from "./User.model.js"
 
 export const getUsersAsAdmin = async (req, skip, limit) => {
@@ -31,15 +32,10 @@ export const getProfileAsUser = async (req, userName) => {
 
     const user = await User.find({ userName: userName })
 
-    if (user[0].visibility == "public") {
-        return User.find({ userName: userName }, {
-            userName: 1,
-            followers: 1,
-            following: 1,
-            fisrtName: 1,
-            lastName: 1,
-            about: 1
-        })
+    if (user[0].visibility == "public" ||
+        req.tokenData.userName == user[0].userName ||
+        user.followers.includes(req.tokenData.userName)) {
+        return User.find({ userName: userName }, "-pasword")
     }
     else {
         return User.find({ userName: userName }, {
