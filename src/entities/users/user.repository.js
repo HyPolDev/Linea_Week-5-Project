@@ -35,7 +35,9 @@ export const getProfileAsUser = async (req, userName) => {
     if (user[0].visibility == "public" ||
         req.tokenData.userName == user[0].userName ||
         user.followers.includes(req.tokenData.userName)) {
-        return User.find({ userName: userName }, "-pasword")
+        let Profile = User.find({ userName: userName }, "-pasword")
+
+        return Profile
     }
     else {
         return User.find({ userName: userName }, {

@@ -25,7 +25,6 @@ export const getProfile = async (req, res) => {
     try {
 
         const profile = await getProfileService(req)
-
         res.status(200).json({
             success: true,
             message: "User retrieved successfuly",

@@ -1,3 +1,4 @@
+import { createLogger } from "vite"
 import Post from "../posts/Post.model.js"
 import User from "./User.model.js"
 import { checkUserIsActive, deleteProfileRepository, getProfileAsUser, getProfileRepository, getUsersAsAdmin, getUsersAsUser, updateProfileRepository } from "./user.repository.js"
@@ -5,7 +6,7 @@ import { checkUserIsActive, deleteProfileRepository, getProfileAsUser, getProfil
 
 export const getUsersService = async (req) => {
     const page = parseInt(req.body.page - 1)
-    const pageSize = parseInt(req.body.pageSize) || 5
+    const pageSize = parseInt(req.body.pageSize) || 1000
     const skip = page * pageSize || 0
     const limit = pageSize
     const roleName = req.tokenData.roleName
@@ -26,7 +27,8 @@ export const getProfileService = async (req, res) => {
     const userName = req.params.userName
     const roleName = req.tokenData.roleName
     if (roleName == "superadmin" || roleName == "admin") {
-        const Profile = await User.find({ userName: userName })
+        const Profile = await getProfileAsUser(req, userName)
+
         return Profile
     }
     else {
